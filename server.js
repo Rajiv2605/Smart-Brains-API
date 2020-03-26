@@ -7,6 +7,7 @@
  * ! POSTMAN is deprecated. Install a new one.
  */
 
+const Clarifai = require('clarifai');
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -24,33 +25,6 @@ const knex = require('knex')({
         database: 'imgdb'
     }
 });
-
-const database = {
-    users: [
-        {
-            id: '123',
-            name: 'John',
-            email: 'john@gmail.com',
-            password: 'cookies',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '124',
-            name: 'Sally',
-            email: 'sally@gmail.com',
-            password: 'bananas',
-            entries: 0,
-            joined: new Date()
-        }
-    ],
-    login: [{
-            id: '987',
-            has: '',
-            email: 'john@gmail.com'
-        }
-    ]
-}
 
 // root endpoint
 app.get('/', (req, res) => {
@@ -128,6 +102,16 @@ app.get('/profile/:id', (req, res) => {
                     })
                     .catch(err => res.status(400).json('error getting user'));
 })
+
+const appC = new Clarifai.App({
+    apiKey: '5e510ab73ee240e7a846b9caee5c38f3'
+   });
+
+app.post('/imageUrl', (req, res) => {
+    appC.models.predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
+               .then(response => res.json(response))
+               .catch(err => res.status(400).json("Error"));
+});
 
 app.put('/image', (req, res) => {
     const  { id } = req.body;
