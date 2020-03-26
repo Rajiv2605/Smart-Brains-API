@@ -25,10 +25,6 @@ const knex = require('knex')({
     }
 });
 
-// knex.select('*').from('users').then(data => {
-//     console.log(data);
-// });
-
 const database = {
     users: [
         {
@@ -83,16 +79,6 @@ app.post('/signin', (req, res) => {
             }
         })
         .catch(err => res.status(400).json('something went wrong'));
-
-    // bcrypt.compare("cookies", "$2b$10$yueQRCjavbtqmHO2K65vEeXgOau6.wlBNx1yULSSMKeWXRBiTM/fG", (err, res) => {
-    //     console.log("first guess", res);
-    // })
-
-    // if(req.body.email === database.users[0].email &&
-    //    req.body.password === database.users[0].password)
-    //     res.json(database.users[0]);
-    // else
-    //     res.status(400).json("error loggin in");
 });
 
 // register endpoint
@@ -137,17 +123,6 @@ app.get('/profile/:id', (req, res) => {
                             res.status(400).json('user not found');
                     })
                     .catch(err => res.status(400).json('error getting user'));
-
-    // let found = false;
-    // database.users.forEach(user => {
-    //     if(user.id === id){
-    //         found = true;
-    //         return res.json(user);
-    //     }
-    // })
-
-    // if(!found)
-    //     res.status(404).json('not found');
 })
 
 app.put('/image', (req, res) => {
@@ -159,17 +134,4 @@ app.put('/image', (req, res) => {
                  .then(entries => {
                      res.json(entries[0]);
                  })
-                //  .catch(res.status(400).json('unable to get entries'));
-
-    // let found = false;
-    // database.users.forEach(user => {
-    //     if(user.id === id){
-    //         found = true;
-    //         user.entries++;
-    //         return res.json(user.entries);
-    //     }
-    // })
-
-    // if(!found)
-    //     res.status(404).json('not found');
 })
