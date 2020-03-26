@@ -63,6 +63,8 @@ app.listen(3000, () => {
 
 // signin endpoint
 app.post('/signin', (req, res) => {
+    if(!req.body.email || !req.body.password)
+        return res.status(400).json("Invalid email or password");
     knex.select('email', 'hash').from('login')
         .where('email', '=', req.body.email)
         .then(data => {
@@ -84,6 +86,8 @@ app.post('/signin', (req, res) => {
 // register endpoint
 app.post('/register', (req, res) => {
     const {email, name, password} = req.body;
+    if(!email || !name || !password)
+        return res.status(400).json("Invalid registration");
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
